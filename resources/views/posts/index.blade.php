@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>All Posts</title>
 </head>
-
 <body>
     <h1>All Posts</h1>
     <a href="{{ route('posts.create') }}">Create New Post</a>
     <ul>
         @foreach ($posts as $post)
             <li>
-                <p> {{ $post->content }} </p>
+                <p>{{ $post->content }}</p>
+                @if($post->image)
+                    <img src="{{ asset('images/' . $post->image) }}" alt="Post Image" width="100">
+                @endif
                 <small>Posted by {{ $post->user->name }}</small>
                 <a href="{{ route('posts.show', $post) }}">View</a>
                 <a href="{{ route('posts.edit', $post) }}">Edit</a>
@@ -24,5 +25,4 @@
         @endforeach
     </ul>
 </body>
-
 </html>
