@@ -11,7 +11,7 @@
             <li>
                 <p>{{ $post->content }}</p>
                 @if($post->image)
-                    <img src="{{ asset('images/' . $post->image) }}" alt="Post Image" width="100">
+                    <img src=" {{ $post->getImageUrl() }} " alt="Post Image" width="100">
                 @endif
                 <small>Posted by {{ $post->user->name }}</small>
                 <a href="{{ route('posts.show', $post) }}">View</a>

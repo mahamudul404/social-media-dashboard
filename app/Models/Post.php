@@ -26,4 +26,11 @@ class Post extends Model
     public function likes(){
         return $this->hasMany(Like::class);
     }
+
+    public function getImageUrl(){
+        if ($this->image) {
+            return asset('storage/images/' . $this->image);
+        }
+        return null;
+    }
 }

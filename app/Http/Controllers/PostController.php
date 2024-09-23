@@ -37,7 +37,7 @@ class PostController extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '.' . $image->extension(); // Generate a unique name for the image
-            $image->storeAs('public/images', $imageName); // Store the image in the public/images directory
+            $image->storeAs('images', $imageName,'public'); // Store the image in the public/images directory
         }
 
         // Create a new post
