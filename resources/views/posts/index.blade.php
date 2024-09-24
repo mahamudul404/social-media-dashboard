@@ -1,52 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
+<x-app-layout title="Home - Recent Posts">
+    <div class="container mx-auto py-8">
+        <div class="flex flex-col items-center">
+            <h1 class="text-3xl font-bold mb-6 text-center">Recent Posts</h1>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Posts</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-
-<body>
-    <div class="container mt-5">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h1>All Posts</h1>
-            <a href="{{ route('posts.create') }}" class="btn btn-success">Create New Post</a>
-        </div>
-
-        <!-- Display All Posts -->
-        <div class="row">
+            <!-- Posts -->
             @foreach ($posts as $post)
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <p class="card-text">{{ $post->content }}</p>
+                <div class="bg-white shadow-md rounded-lg w-full max-w-xl mb-6">
+                    <!-- Post Header (User Info) -->
+                    <div class="flex items-center bg-blue-600 text-white p-4 rounded-t-lg">
+                        <img src="{{ $post->getImageUrl() }}" alt="Image" class="rounded-full w-12 h-12 mr-4">
+                        <div>
+                            <h5 class="text-lg font-semibold">{{ $post->user->name }}</h5>
+                            <span class="text-sm">{{ $post->created_at->diffForHumans() }}</span>
+                        </div>
+                    </div>
 
-                            <!-- Display Post Image if Exists -->
-                            @if ($post->image)
-                                <img src="{{ $post->getImageUrl() }}" class="img-fluid mb-3" alt="Post Image">
-                            @endif
+                    <!-- Post Content -->
+                    <div class="p-4">
+                        <p class="text-gray-700 mb-3">{{ $post->content }}</p>
 
-                            <p class="text-muted">Posted by {{ $post->user->name }}</p>
+                        <!-- Post Image (if available) -->
+                        @if ($post->image)
+                            <img src="{{ $post->getImageUrl() }}" src="{{ asset('storage/images/' . $post->image) }}" class="w-full h-auto rounded-lg mb-4" alt="Post Image">
+                        @endif
 
-                            <!-- Action Buttons -->
-                            <a href="{{ route('posts.show', $post->id) }}" class="btn btn-primary btn-sm">View</a>
-                            <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                            <form action="{{ route('posts.destroy', $post->id) }}" method="POST"
-                                class="d-inline-block">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                            </form>
+                        <div class="flex justify-between items-center">
+                            <!-- Interaction Buttons -->
+                            <div class="flex space-x-4">
+                                <button class="text-blue-500 hover:text-blue-600">
+                                    <i class="fas fa-thumbs-up"></i> Like
+                                </button>
+                                <button class="text-gray-500 hover:text-gray-600">
+                                    <i class="fas fa-comment"></i> Comment
+                                </button>
+                            </div>
+
+                            <!-- Read More -->
+                            <a href="{{ route('posts.show', $post->id) }}" class="text-blue-600 hover:underline">Read More</a>
                         </div>
                     </div>
                 </div>
             @endforeach
+
+            <!-- Pagination -->
+            <div class="mt-4">
+                {{-- {{ $posts->links() }} --}}
+            </div>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+</x-app-layout>
