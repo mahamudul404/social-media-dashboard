@@ -12,11 +12,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('posts', function (Blueprint $table) {
-            $table->id(); // Auto-incrementing ID
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Foreign key to the users table
-            $table->text('content'); // Content of the post
-            $table->string('image')->nullable(); // Path to the uploaded image, nullable if no image
-            $table->timestamps(); // Created at and Updated at timestamps
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Links to users table
+            $table->text('content');  // Post content
+            $table->string('image')->nullable(); // Image file name (if any)
+            $table->timestamps();
         });
     }
 

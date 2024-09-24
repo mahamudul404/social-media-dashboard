@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Like;
 use App\Models\Post;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -48,12 +49,17 @@ class PostController extends Controller
         ]);
 
         // Redirect to the index page with a success message
-        return redirect()->route('posts.index')->with('success', 'Post created successfully.');
+        flash()->success('Your file has been uploaded.');
+
+        return redirect()->route('posts.index');
     }
 
     // Display the specified post
     public function show(Post $post)
     {
+
+        $post->load('comments.user');
+
         return view('posts.show', compact('post'));
     }
 
@@ -93,7 +99,10 @@ class PostController extends Controller
         ]);
 
         // Redirect to the index page with a success message
-        return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
+
+        flash()->success('Your file has been uploaded.');
+
+        return redirect()->route('posts.index');
     }
 
     // Remove the specified post from storage
@@ -108,6 +117,29 @@ class PostController extends Controller
         $post->delete();
 
         // Redirect to the index page with a success message
-        return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
+
+        flash()->success('Your file has been uploaded.');
+
+        return redirect()->route('posts.index');
+    }
+
+    public function likePost($id)
+    {
+        $post = Post::findOrFail($id);
+
+        // Check if the post has already been liked by the user
+        if ($post->likedByUser(Auth::id())) {
+            // Unlike the post
+            Like::where('post_id', $post->id)->where('user_id', Auth::id())->delete();
+        } else {
+            // Like the post
+            Like::create([
+                'user_id' => Auth::id(),
+                'post_id' => $post->id,
+            ]);
+        }
+
+        return redirect()->back();
     }
 }
+

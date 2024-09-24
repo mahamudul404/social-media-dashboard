@@ -9,28 +9,45 @@ class Post extends Model
 {
     use HasFactory;
 
-    protected $fillable = [ 
+    protected $fillable = [
         'user_id',
         'content',
         'image',
     ];
 
-    public function user(){
+    /**
+     * Relationship: A post belongs to a user.
+     */
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function commets(){
+    /**
+     * Relationship: A post can have many comments.
+     */
+    public function comments()
+    {
         return $this->hasMany(Comment::class);
     }
 
-    public function likes(){
+    /**
+     * Relationship: A post can have many likes.
+     */
+    public function likes()
+    {
         return $this->hasMany(Like::class);
     }
 
-    public function getImageUrl(){
-        if ($this->image) {
-            return asset('storage/images/' . $this->image);
-        }
-        return null;
+    public function likedByUser($userId)
+    {
+        return $this->likes()->where('user_id', $userId)->exists();
+    }
+
+
+
+    public function getImageUrl()
+    {
+        return asset('storage/images/' . $this->image);
     }
 }
