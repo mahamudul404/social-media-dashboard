@@ -8,7 +8,6 @@
 </head>
 <body>
     
-        @endif
 
         <!-- Display the Current Post Image if Exists -->
         @if($post->image)
