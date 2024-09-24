@@ -37,7 +37,7 @@ class PostController extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '.' . $image->extension(); // Generate a unique name for the image
-            $image->storeAs('images', $imageName,'public'); // Store the image in the public/images directory
+            $image->storeAs('images', $imageName, 'public'); // Store the image in the public/images directory
         }
 
         // Create a new post
@@ -74,17 +74,17 @@ class PostController extends Controller
 
         $imageName = $post->image;
 
-        // Handle image upload
+        // Handle image uplif ($request->hasFile('image')) {
         if ($request->hasFile('image')) {
-            // Delete the old image if it exists
-            if ($imageName && Storage::exists('public/images/' . $imageName)) {
-                Storage::delete('public/images/' . $imageName);
-            }
-
             $image = $request->file('image');
             $imageName = time() . '.' . $image->extension(); // Generate a unique name for the image
-            $image->storeAs('public/images', $imageName); // Store the new image
+            $image->storeAs('images', $imageName, 'public'); // Store the image in the public/images directory
         }
+
+
+
+        // Store the new image
+
 
         // Update the post
         $post->update([
